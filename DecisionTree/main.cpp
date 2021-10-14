@@ -1,7 +1,7 @@
 
 //Erez Polak 322768995
 //Mordechay Cohen 206958035
-
+//teacher: Eliezer Ginsburger
 
 #include <iostream>
 #include <list>
