@@ -1,14 +1,19 @@
 #include "tree.h"
 
-
+//func to search qestion in the decition tree
 Node* Tree::search(Node* p, string val, Node*& parent)
 {	
-	if (p->value == val) {
+	//if the qestion is first, no father, return the root of the tree.
+	if (p->value == val)
+	{
 		//p must be the root
 		parent = nullptr;
 		return p;
 	}
-	if (!p->isLeaf) {
+	//check if the node id desition or not, if node isnt leaf -> chek qestion
+	if (!p->isLeaf) 
+	{
+		//chek the list with iterator
 		for (auto i = p->answersList.begin(); i != p->answersList.end(); i++)
 		{
 			cout << (*i)->son->value << endl;
@@ -22,24 +27,34 @@ Node* Tree::search(Node* p, string val, Node*& parent)
 
 		}
 	}
+	//if no find match
 	parent = nullptr;
 	return nullptr;
 }
 
+//serch qestion in tree, and print path.
 bool Tree::searchAndPrint(Node* p, string val)
 {
+	//if the root is the qestion's search ->print root
 	if (p->value == val) {
 		cout << p->value;
 		return true;
 	}
-	else {
-		if (p->isLeaf) {
+	else
+	{
+		//if we came to end of tree, decition, and not found -> false
+		if (p->isLeaf)
+		{
 			return false;
 		}
-		else {
+		else
+		{
+			//chek the list with iterator
 			for (auto i = p->answersList.begin(); i != p->answersList.end(); i++)
 			{
-				if (searchAndPrint((*i)->son, val)) {
+				// print path.
+				if (searchAndPrint((*i)->son, val))
+				{
 					cout << " " <<  (*i)->ans << "   " << p->value  << endl;
 					return true;
 				}
@@ -47,12 +62,13 @@ bool Tree::searchAndPrint(Node* p, string val)
 		}
 	}
 }
-
+//print all qestion in tree, whith spase.
 void Tree::print(Node* p, int level)
 {
 	for (int i = 0; i < level; i++){cout << " ";}
 	cout << p->value << endl;
-	if (!p->isLeaf) {
+	if (!p->isLeaf)
+	{
 		for (auto i = p->answersList.begin(); i != p->answersList.end(); i++)
 		{
 			for (int i = 0; i < level; i++) { cout << " "; }
@@ -62,6 +78,7 @@ void Tree::print(Node* p, int level)
 	}
 }
 
+//func that run qestion and bring the next matches qestion 
 void Tree::process(Node* p)
 {
 	cout << p->value;
@@ -75,12 +92,10 @@ void Tree::process(Node* p)
 				process((*i)->son);
 			}
 		}
-		//cout << "not a valid answer" << endl;
-		//process(p);
 	}
 
 }
-
+//delete sub tree with recorsia 
 void Tree::deleteAllSubTree(Node* t)
 {
 	if (!t->isLeaf)
@@ -103,24 +118,30 @@ void Tree::deleteAllSubTree(Node* t)
 
 }
 
+//create node to root
 void Tree::addRoot(string newval)
 {
 	this->root = new Node(newval);
 }
 
+//add qestion to list of father qestion.
 bool Tree::addSon(string fatherquestion, string newanswer, string newval)
 {
 	Node* p;
+	//run trre to find the given qestion 
 	Node *father = search(root, fatherquestion, p);
-	//cout << father->value << endl;
-	if (father == nullptr) {
+	//if no father -> false
+	if (father == nullptr)
+	{
 		return false;
 	}
 	else {
 		//if the father is a leaf,  we need to change its status to not leaf.
-		if (father->isLeaf) {
+		if (father->isLeaf)
+		{
 			father->isLeaf = false;
 		}
+		//add answer to the qestion's list
 		Node* n = new Node(newval);
 		father->answersList.push_back(new Answer(newanswer, n));
 		return true;
